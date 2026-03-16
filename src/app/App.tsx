@@ -127,7 +127,6 @@ const segments: Segment[] = [
     abbr: 'HCP',
     name: 'Health Care Protectionists',
     dominantRegions: [
-      { id: 'new-england', name: 'New England', percent: 5.8 },
       { id: 'middle-atlantic', name: 'Middle Atlantic', percent: 14.6 },
     ],
   },
@@ -152,7 +151,7 @@ const segments: Segment[] = [
     abbr: 'GHI',
     name: 'Global Health Institutionalists',
     dominantRegions: [
-      { id: 'middle-atlantic', name: 'Middle Atlantic', percent: 15.7 },
+      { id: 'new-england', name: 'New England', percent: 5.8 },
     ],
   },
 ];
