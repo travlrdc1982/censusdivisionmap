@@ -3,15 +3,16 @@ import {
   ComposableMap,
   Geographies,
   Geography,
+  Annotation,
 } from "react-simple-maps";
-import { mesh } from "topojson-client";
+import { mesh, feature } from "topojson-client";
 import type {
   Topology,
   GeometryCollection,
 } from "topojson-specification";
 
 interface USCensusMapProps {
-  highlightedRegions: string[];
+  regionPercentMap: Record<string, number>;
   onRegionClick?: (regionId: string) => void;
 }
 
@@ -76,17 +77,30 @@ const stateToDivision: Record<string, string> = {
 const divisionNames: Record<string, string> = {
   "new-england": "New England",
   "middle-atlantic": "Middle Atlantic",
-  "east-north-central": "East North Central",
-  "west-north-central": "West North Central",
+  "east-north-central": "E. North Central",
+  "west-north-central": "W. North Central",
   "south-atlantic": "South Atlantic",
-  "east-south-central": "East South Central",
-  "west-south-central": "West South Central",
+  "east-south-central": "E. South Central",
+  "west-south-central": "W. South Central",
   mountain: "Mountain",
   pacific: "Pacific",
 };
 
+// Approximate label positions for each division (lon, lat)
+const divisionLabelPositions: Record<string, [number, number]> = {
+  "new-england": [-71.5, 43.5],
+  "middle-atlantic": [-76, 41.5],
+  "east-north-central": [-86, 42.5],
+  "west-north-central": [-97, 44],
+  "south-atlantic": [-80, 34],
+  "east-south-central": [-87.5, 34],
+  "west-south-central": [-96, 32],
+  mountain: [-110, 42],
+  pacific: [-121, 40],
+};
+
 export function USCensusMap({
-  highlightedRegions,
+  regionPercentMap,
   onRegionClick,
 }: USCensusMapProps) {
   const [hoveredDivision, setHoveredDivision] = useState<
@@ -99,6 +113,8 @@ export function USCensusMap({
   const [topoData, setTopoData] = useState<Topology | null>(
     null,
   );
+
+  const highlightedRegions = Object.keys(regionPercentMap);
 
   // Load topology data
   useEffect(() => {
@@ -119,16 +135,12 @@ export function USCensusMap({
   const divisionBorders = useMemo(() => {
     if (!topoData?.objects?.states) return null;
 
-    // Create mesh that only shows borders between different divisions
     const borders = mesh(
       topoData,
       topoData.objects.states as GeometryCollection,
       (a, b) => {
-        // a and b are adjacent geometries
-        // Return true to draw a border between them
         const divA = stateToDivision[a.id as string];
         const divB = stateToDivision[b.id as string];
-        // Draw border only if they belong to different divisions
         return divA !== divB;
       },
     );
@@ -155,7 +167,6 @@ export function USCensusMap({
                 const isHighlighted =
                   division &&
                   highlightedRegions.includes(division);
-                const isHovered = division === hoveredDivision;
 
                 return (
                   <Geography
@@ -212,6 +223,45 @@ export function USCensusMap({
                   className="pointer-events-none"
                 />
               )}
+
+              {/* Render percentage labels on highlighted divisions */}
+              {highlightedRegions.map((divisionId) => {
+                const pos = divisionLabelPositions[divisionId];
+                if (!pos) return null;
+                const percent = regionPercentMap[divisionId];
+                return (
+                  <Annotation
+                    key={divisionId}
+                    subject={pos}
+                    connectorProps={{}}
+                    dx={0}
+                    dy={0}
+                  >
+                    <rect
+                      x={-24}
+                      y={-12}
+                      width={48}
+                      height={20}
+                      rx={4}
+                      fill="rgba(255,255,255,0.9)"
+                      stroke="#3b82f6"
+                      strokeWidth={1}
+                    />
+                    <text
+                      textAnchor="middle"
+                      y={4}
+                      style={{
+                        fontSize: 12,
+                        fontWeight: 700,
+                        fill: "#1e40af",
+                        fontFamily: "system-ui, sans-serif",
+                      }}
+                    >
+                      {percent}%
+                    </text>
+                  </Annotation>
+                );
+              })}
             </>
           )}
         </Geographies>
@@ -230,11 +280,15 @@ export function USCensusMap({
             <div className="font-semibold text-gray-900">
               {divisionNames[hoveredDivision]}
             </div>
-            <div className="text-xs text-gray-500 mt-1">
-              {highlightedRegions.includes(hoveredDivision)
-                ? "Dominant Region"
-                : "Census Division"}
-            </div>
+            {regionPercentMap[hoveredDivision] !== undefined ? (
+              <div className="text-xs text-blue-600 font-medium mt-1">
+                {regionPercentMap[hoveredDivision]}% overindex
+              </div>
+            ) : (
+              <div className="text-xs text-gray-500 mt-1">
+                Census Division
+              </div>
+            )}
           </div>
         </div>
       )}

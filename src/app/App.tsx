@@ -2,85 +2,155 @@ import { useState } from 'react';
 import { USCensusMap } from './components/USCensusMap';
 import { SegmentCard } from './components/SegmentCard';
 
+interface DominantRegion {
+  id: string;
+  name: string;
+  percent: number;
+}
+
 interface Segment {
   id: string;
   name: string;
-  dominantRegions: Array<{ id: string; name: string }>;
-  marketShare: number;
-  growth: number;
+  dominantRegions: DominantRegion[];
 }
 
-export default function App() {
-  const [selectedSegment, setSelectedSegment] = useState<string | null>('enterprise');
+const segments: Segment[] = [
+  {
+    id: 'trust-science',
+    name: 'Trust the Science Pragmatists',
+    dominantRegions: [
+      { id: 'pacific', name: 'Pacific', percent: 17.3 },
+    ],
+  },
+  {
+    id: 'consumer-empowerment',
+    name: 'Consumer Empowerment Champions',
+    dominantRegions: [
+      { id: 'east-north-central', name: 'E. North Central', percent: 19.7 },
+    ],
+  },
+  {
+    id: 'traditional-conservatives',
+    name: 'Traditional Conservatives',
+    dominantRegions: [
+      { id: 'east-south-central', name: 'E. South Central', percent: 12.1 },
+      { id: 'west-south-central', name: 'W. South Central', percent: 29.4 },
+    ],
+  },
+  {
+    id: 'wellness-evangelists',
+    name: 'Wellness Evangelists',
+    dominantRegions: [
+      { id: 'east-south-central', name: 'E. South Central', percent: 8.3 },
+      { id: 'west-south-central', name: 'W. South Central', percent: 16.7 },
+    ],
+  },
+  {
+    id: 'price-populists',
+    name: 'Price Populists',
+    dominantRegions: [
+      { id: 'middle-atlantic', name: 'Middle Atlantic', percent: 15.1 },
+      { id: 'mountain', name: 'Mountain', percent: 12.6 },
+    ],
+  },
+  {
+    id: 'health-futurists',
+    name: 'Health Futurists',
+    dominantRegions: [
+      { id: 'east-north-central', name: 'E. North Central', percent: 17.0 },
+      { id: 'pacific', name: 'Pacific', percent: 16.4 },
+    ],
+  },
+  {
+    id: 'paleo-freedom',
+    name: 'Paleo Freedom Fighters',
+    dominantRegions: [
+      { id: 'east-north-central', name: 'E. North Central', percent: 17.6 },
+      { id: 'west-north-central', name: 'W. North Central', percent: 7.6 },
+      { id: 'mountain', name: 'Mountain', percent: 12.0 },
+    ],
+  },
+  {
+    id: 'holistic-naturalists',
+    name: 'Holistic Natural Naturalists',
+    dominantRegions: [
+      { id: 'south-atlantic', name: 'South Atlantic', percent: 28.8 },
+      { id: 'east-south-central', name: 'E. South Central', percent: 8.4 },
+    ],
+  },
+  {
+    id: 'libertarians',
+    name: 'Libertarians',
+    dominantRegions: [
+      { id: 'new-england', name: 'New England', percent: 5.4 },
+      { id: 'south-atlantic', name: 'South Atlantic', percent: 27.1 },
+      { id: 'mountain', name: 'Mountain', percent: 14.6 },
+      { id: 'pacific', name: 'Pacific', percent: 26.6 },
+    ],
+  },
+  {
+    id: 'anti-vax',
+    name: 'Anti-Vax',
+    dominantRegions: [
+      { id: 'pacific', name: 'Pacific', percent: 15.4 },
+    ],
+  },
+  {
+    id: 'universal-care',
+    name: 'Universal Care Progressives',
+    dominantRegions: [
+      { id: 'south-atlantic', name: 'South Atlantic', percent: 31.2 },
+      { id: 'west-south-central', name: 'W. South Central', percent: 12.4 },
+    ],
+  },
+  {
+    id: 'faith-justice',
+    name: 'Faith & Justice Progressives',
+    dominantRegions: [
+      { id: 'pacific', name: 'Pacific', percent: 24.3 },
+    ],
+  },
+  {
+    id: 'health-care-protectionists',
+    name: 'Health Care Protectionists',
+    dominantRegions: [
+      { id: 'new-england', name: 'New England', percent: 5.8 },
+      { id: 'middle-atlantic', name: 'Middle Atlantic', percent: 14.6 },
+    ],
+  },
+  {
+    id: 'health-abundance',
+    name: 'Health Abundance Dems',
+    dominantRegions: [
+      { id: 'east-north-central', name: 'E. North Central', percent: 15.7 },
+    ],
+  },
+  {
+    id: 'incrementalists',
+    name: 'Incrementalists',
+    dominantRegions: [
+      { id: 'pacific', name: 'Pacific', percent: 32.8 },
+    ],
+  },
+  {
+    id: 'gh-institutionalists',
+    name: 'GH Institutionalists',
+    dominantRegions: [
+      { id: 'middle-atlantic', name: 'Middle Atlantic', percent: 15.7 },
+    ],
+  },
+];
 
-  // Mock segment data
-  const segments: Segment[] = [
-    {
-      id: 'enterprise',
-      name: 'Enterprise Software',
-      dominantRegions: [
-        { id: 'middle-atlantic', name: 'Middle Atlantic' },
-        { id: 'pacific', name: 'Pacific' }
-      ],
-      marketShare: 42,
-      growth: 12.5
-    },
-    {
-      id: 'consumer',
-      name: 'Consumer Electronics',
-      dominantRegions: [
-        { id: 'pacific', name: 'Pacific' },
-        { id: 'south-atlantic', name: 'South Atlantic' }
-      ],
-      marketShare: 38,
-      growth: 8.3
-    },
-    {
-      id: 'healthcare',
-      name: 'Healthcare Services',
-      dominantRegions: [
-        { id: 'new-england', name: 'New England' },
-        { id: 'east-north-central', name: 'E. North Central' }
-      ],
-      marketShare: 28,
-      growth: 15.7
-    },
-    {
-      id: 'manufacturing',
-      name: 'Manufacturing',
-      dominantRegions: [
-        { id: 'east-north-central', name: 'E. North Central' },
-        { id: 'west-north-central', name: 'W. North Central' }
-      ],
-      marketShare: 35,
-      growth: 4.2
-    },
-    {
-      id: 'energy',
-      name: 'Energy & Resources',
-      dominantRegions: [
-        { id: 'west-south-central', name: 'W. South Central' },
-        { id: 'mountain', name: 'Mountain' }
-      ],
-      marketShare: 31,
-      growth: -2.1
-    },
-    {
-      id: 'financial',
-      name: 'Financial Services',
-      dominantRegions: [
-        { id: 'middle-atlantic', name: 'Middle Atlantic' },
-        { id: 'south-atlantic', name: 'South Atlantic' }
-      ],
-      marketShare: 45,
-      growth: 6.8
-    }
-  ];
+export default function App() {
+  const [selectedSegment, setSelectedSegment] = useState<string | null>('trust-science');
 
   const selectedSegmentData = segments.find((s) => s.id === selectedSegment);
-  const highlightedRegions = selectedSegmentData
-    ? selectedSegmentData.dominantRegions.map((r) => r.id)
-    : [];
+  const regionPercentMap: Record<string, number> = {};
+  if (selectedSegmentData) {
+    for (const r of selectedSegmentData.dominantRegions) {
+      regionPercentMap[r.id] = r.percent;
+    }
+  }
 
   return (
     <div className="size-full bg-gray-50">
@@ -88,31 +158,29 @@ export default function App() {
         {/* Header */}
         <div className="bg-white border-b border-gray-200 px-6 py-4">
           <h1 className="text-2xl font-semibold text-gray-900">
-            Regional Market Analysis
+            Division Demographics
           </h1>
           <p className="text-sm text-gray-500 mt-1">
-            US Census Divisions - Dominant Regions by Market Segment
+            Overindexed Census Divisions by Consumer Segment
           </p>
         </div>
 
         {/* Main Content */}
         <div className="flex-1 flex gap-6 p-6 overflow-hidden">
           {/* Left Sidebar - Segments */}
-          <div className="w-80 flex flex-col">
+          <div className="w-72 flex flex-col">
             <div className="mb-4">
-              <h2 className="font-semibold text-gray-900 mb-1">Market Segments</h2>
+              <h2 className="font-semibold text-gray-900 mb-1">Segments</h2>
               <p className="text-xs text-gray-500">
-                Click a segment to view its dominant regions
+                Click a segment to view overindexed divisions
               </p>
             </div>
-            <div className="flex-1 overflow-y-auto space-y-3 pr-2">
+            <div className="flex-1 overflow-y-auto space-y-2 pr-2">
               {segments.map((segment) => (
                 <SegmentCard
                   key={segment.id}
                   name={segment.name}
-                  dominantRegions={segment.dominantRegions.map((r) => r.name)}
-                  marketShare={segment.marketShare}
-                  growth={segment.growth}
+                  dominantRegions={segment.dominantRegions}
                   isSelected={selectedSegment === segment.id}
                   onClick={() => setSelectedSegment(segment.id)}
                 />
@@ -128,74 +196,39 @@ export default function App() {
               </h2>
               <p className="text-sm text-gray-500 mt-1">
                 {selectedSegmentData
-                  ? `Highlighting ${selectedSegmentData.dominantRegions.length} dominant region${
+                  ? `${selectedSegmentData.dominantRegions.length} overindexed division${
                       selectedSegmentData.dominantRegions.length > 1 ? 's' : ''
                     }`
-                  : 'Select a segment to view dominant regions'}
+                  : 'Select a segment to view overindexed divisions'}
               </p>
             </div>
             <div className="flex-1 min-h-0">
-              <USCensusMap highlightedRegions={highlightedRegions} />
+              <USCensusMap regionPercentMap={regionPercentMap} />
             </div>
           </div>
 
-          {/* Right Sidebar - Stats */}
-          <div className="w-72 space-y-4">
-            <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4">
-              <h3 className="text-sm font-semibold text-gray-700 mb-3">
-                Census Divisions
-              </h3>
-              <div className="space-y-2 text-xs">
-                <div className="flex justify-between py-1.5 border-b border-gray-100">
-                  <span className="text-gray-600">Total Divisions</span>
-                  <span className="font-medium text-gray-900">9</span>
-                </div>
-                <div className="flex justify-between py-1.5 border-b border-gray-100">
-                  <span className="text-gray-600">Highlighted</span>
-                  <span className="font-medium text-blue-600">
-                    {highlightedRegions.length}
-                  </span>
-                </div>
-              </div>
-            </div>
-
+          {/* Right Sidebar - Details */}
+          <div className="w-64 space-y-4">
             {selectedSegmentData && (
               <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4">
                 <h3 className="text-sm font-semibold text-gray-700 mb-3">
-                  Segment Details
+                  Overindexed Divisions
                 </h3>
                 <div className="space-y-3">
-                  <div>
-                    <div className="text-xs text-gray-500 mb-1">Market Share</div>
-                    <div className="text-2xl font-semibold text-gray-900">
-                      {selectedSegmentData.marketShare}%
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-xs text-gray-500 mb-1">YoY Growth</div>
+                  {selectedSegmentData.dominantRegions.map((region) => (
                     <div
-                      className={`text-2xl font-semibold ${
-                        selectedSegmentData.growth >= 0 ? 'text-green-600' : 'text-red-600'
-                      }`}
+                      key={region.id}
+                      className="flex items-center justify-between"
                     >
-                      {selectedSegmentData.growth >= 0 ? '+' : ''}
-                      {selectedSegmentData.growth}%
+                      <div className="flex items-center gap-2 text-sm">
+                        <div className="w-3 h-3 bg-blue-500 rounded-sm" />
+                        <span className="text-gray-700">{region.name}</span>
+                      </div>
+                      <span className="text-sm font-semibold text-gray-900">
+                        {region.percent}%
+                      </span>
                     </div>
-                  </div>
-                  <div className="pt-2 border-t border-gray-100">
-                    <div className="text-xs text-gray-500 mb-2">Dominant Regions</div>
-                    <div className="space-y-1.5">
-                      {selectedSegmentData.dominantRegions.map((region) => (
-                        <div
-                          key={region.id}
-                          className="flex items-center gap-2 text-xs"
-                        >
-                          <div className="w-3 h-3 bg-blue-500 rounded-sm" />
-                          <span className="text-gray-700">{region.name}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             )}
@@ -214,10 +247,10 @@ export default function App() {
                   />
                 </svg>
                 <div className="text-xs text-blue-800">
-                  <div className="font-medium mb-1">About Census Divisions</div>
+                  <div className="font-medium mb-1">About This View</div>
                   <div className="text-blue-700">
-                    The US Census Bureau divides the country into 9 geographic divisions for
-                    statistical analysis and reporting.
+                    Highlighted divisions show where each consumer segment
+                    overindexes relative to the national average.
                   </div>
                 </div>
               </div>
