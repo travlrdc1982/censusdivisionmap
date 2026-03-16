@@ -20,7 +20,8 @@ const segments: Segment[] = [
     abbr: 'TSP',
     name: 'Trust the Science Pragmatists',
     dominantRegions: [
-      { id: 'pacific', name: 'Pacific', percent: 17.3 },
+      { id: 'east-south-central', name: 'E. South Central', percent: 12.1 },
+      { id: 'west-south-central', name: 'W. South Central', percent: 29.4 },
     ],
   },
   {
@@ -28,7 +29,7 @@ const segments: Segment[] = [
     abbr: 'CEC',
     name: 'Consumer Empowerment Champions',
     dominantRegions: [
-      { id: 'east-north-central', name: 'E. North Central', percent: 19.7 },
+      { id: 'pacific', name: 'Pacific', percent: 17.3 },
     ],
   },
   {
@@ -36,26 +37,7 @@ const segments: Segment[] = [
     abbr: 'TC',
     name: 'Traditional Conservatives',
     dominantRegions: [
-      { id: 'east-south-central', name: 'E. South Central', percent: 12.1 },
-      { id: 'west-south-central', name: 'W. South Central', percent: 29.4 },
-    ],
-  },
-  {
-    id: 'health-futurists',
-    abbr: 'HF',
-    name: 'Health Futurists',
-    dominantRegions: [
-      { id: 'east-north-central', name: 'E. North Central', percent: 17.0 },
-      { id: 'pacific', name: 'Pacific', percent: 16.4 },
-    ],
-  },
-  {
-    id: 'price-populists',
-    abbr: 'PP',
-    name: 'Price Populists',
-    dominantRegions: [
-      { id: 'middle-atlantic', name: 'Middle Atlantic', percent: 15.1 },
-      { id: 'mountain', name: 'Mountain', percent: 12.6 },
+      { id: 'east-north-central', name: 'E. North Central', percent: 19.7 },
     ],
   },
   {
@@ -68,12 +50,29 @@ const segments: Segment[] = [
     ],
   },
   {
+    id: 'price-populists',
+    abbr: 'PP',
+    name: 'Price Populists',
+    dominantRegions: [
+      { id: 'middle-atlantic', name: 'Middle Atlantic', percent: 15.1 },
+      { id: 'mountain', name: 'Mountain', percent: 12.6 },
+    ],
+  },
+  {
+    id: 'health-futurists',
+    abbr: 'HF',
+    name: 'Health Futurists',
+    dominantRegions: [
+      { id: 'west-north-central', name: 'W. North Central', percent: 7.6 },
+      { id: 'pacific', name: 'Pacific', percent: 16.4 },
+    ],
+  },
+  {
     id: 'paleo-freedom',
     abbr: 'PFF',
     name: 'Paleo Freedom Fighters',
     dominantRegions: [
-      { id: 'east-north-central', name: 'E. North Central', percent: 17.6 },
-      { id: 'west-north-central', name: 'W. North Central', percent: 7.6 },
+      { id: 'east-north-central', name: 'E. North Central', percent: 17.0 },
       { id: 'mountain', name: 'Mountain', percent: 12.0 },
     ],
   },
@@ -82,27 +81,25 @@ const segments: Segment[] = [
     abbr: 'HHN',
     name: 'Holistic Health Naturalists',
     dominantRegions: [
+      { id: 'east-north-central', name: 'E. North Central', percent: 17.6 },
       { id: 'south-atlantic', name: 'South Atlantic', percent: 28.8 },
-      { id: 'east-south-central', name: 'E. South Central', percent: 8.4 },
     ],
   },
   {
-    id: 'medical-freedom-libertarians',
+    id: 'libertarians',
     abbr: 'MFL',
-    name: 'Medical Freedom Libertarians',
+    name: 'Libertarians',
+    dominantRegions: [
+      { id: 'south-atlantic', name: 'South Atlantic', percent: 27.1 },
+    ],
+  },
+  {
+    id: 'anti-vax',
+    abbr: 'VS',
+    name: 'Anti-Vax',
     dominantRegions: [
       { id: 'new-england', name: 'New England', percent: 5.4 },
-      { id: 'south-atlantic', name: 'South Atlantic', percent: 27.1 },
-      { id: 'mountain', name: 'Mountain', percent: 14.6 },
-      { id: 'pacific', name: 'Pacific', percent: 26.6 },
-    ],
-  },
-  {
-    id: 'vaccine-skeptics',
-    abbr: 'VS',
-    name: 'Vaccine Skeptics',
-    dominantRegions: [
-      { id: 'pacific', name: 'Pacific', percent: 15.4 },
+      { id: 'east-south-central', name: 'E. South Central', percent: 8.4 },
     ],
   },
   {
@@ -110,8 +107,8 @@ const segments: Segment[] = [
     abbr: 'UCP',
     name: 'Universal Care Progressives',
     dominantRegions: [
-      { id: 'south-atlantic', name: 'South Atlantic', percent: 31.2 },
-      { id: 'west-south-central', name: 'W. South Central', percent: 12.4 },
+      { id: 'mountain', name: 'Mountain', percent: 14.6 },
+      { id: 'pacific', name: 'Pacific', percent: 26.6 },
     ],
   },
   {
@@ -119,7 +116,8 @@ const segments: Segment[] = [
     abbr: 'FJP',
     name: 'Faith & Justice Progressives',
     dominantRegions: [
-      { id: 'pacific', name: 'Pacific', percent: 24.3 },
+      { id: 'west-south-central', name: 'W. South Central', percent: 12.4 },
+      { id: 'pacific', name: 'Pacific', percent: 15.4 },
     ],
   },
   {
@@ -127,31 +125,33 @@ const segments: Segment[] = [
     abbr: 'HCP',
     name: 'Health Care Protectionists',
     dominantRegions: [
-      { id: 'middle-atlantic', name: 'Middle Atlantic', percent: 14.6 },
+      { id: 'pacific', name: 'Pacific', percent: 24.3 },
     ],
   },
   {
     id: 'health-abundance',
     abbr: 'HAD',
-    name: 'Health Abundance Democrats',
+    name: 'Health Abundance Dems',
     dominantRegions: [
-      { id: 'east-north-central', name: 'E. North Central', percent: 15.7 },
+      { id: 'middle-atlantic', name: 'Middle Atlantic', percent: 14.6 },
+      { id: 'south-atlantic', name: 'South Atlantic', percent: 31.2 },
     ],
   },
   {
-    id: 'health-care-incrementalists',
+    id: 'incrementalists',
     abbr: 'HCI',
-    name: 'Health Care Incrementalists',
+    name: 'Incrementalists',
     dominantRegions: [
       { id: 'pacific', name: 'Pacific', percent: 32.8 },
     ],
   },
   {
-    id: 'global-health-institutionalists',
+    id: 'gh-institutionalists',
     abbr: 'GHI',
-    name: 'Global Health Institutionalists',
+    name: 'GH Institutionalists',
     dominantRegions: [
       { id: 'new-england', name: 'New England', percent: 5.8 },
+      { id: 'east-north-central', name: 'E. North Central', percent: 15.7 },
     ],
   },
 ];
