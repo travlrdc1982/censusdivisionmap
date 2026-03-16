@@ -5,7 +5,7 @@ import {
   Geography,
   Annotation,
 } from "react-simple-maps";
-import { mesh, feature } from "topojson-client";
+import { mesh } from "topojson-client";
 import type {
   Topology,
   GeometryCollection,
@@ -116,7 +116,6 @@ export function USCensusMap({
 
   const highlightedRegions = Object.keys(regionPercentMap);
 
-  // Load topology data
   useEffect(() => {
     fetch(geoUrl)
       .then((res) => res.json())
@@ -131,11 +130,10 @@ export function USCensusMap({
     });
   };
 
-  // Generate division borders using topojson mesh
   const divisionBorders = useMemo(() => {
     if (!topoData?.objects?.states) return null;
 
-    const borders = mesh(
+    return mesh(
       topoData,
       topoData.objects.states as GeometryCollection,
       (a, b) => {
@@ -144,8 +142,6 @@ export function USCensusMap({
         return divA !== divB;
       },
     );
-
-    return borders;
   }, [topoData]);
 
   return (
@@ -160,7 +156,6 @@ export function USCensusMap({
         <Geographies geography={geoUrl}>
           {({ geographies }) => (
             <>
-              {/* Render state fills */}
               {geographies.map((geo) => {
                 const fipsCode = geo.id as string;
                 const division = stateToDivision[fipsCode];
@@ -172,20 +167,20 @@ export function USCensusMap({
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    fill={isHighlighted ? "#3b82f6" : "#e5e7eb"}
+                    fill={isHighlighted ? "#0d9488" : "#e5e7eb"}
                     stroke="#ffffff"
-                    strokeWidth={0.2}
+                    strokeWidth={0.3}
                     style={{
                       default: {
                         outline: "none",
                         fill: isHighlighted
-                          ? "#3b82f6"
+                          ? "#0d9488"
                           : "#e5e7eb",
                       },
                       hover: {
                         outline: "none",
                         fill: isHighlighted
-                          ? "#2563eb"
+                          ? "#0f766e"
                           : "#d1d5db",
                       },
                       pressed: { outline: "none" },
@@ -201,18 +196,17 @@ export function USCensusMap({
                       if (division && onRegionClick)
                         onRegionClick(division);
                     }}
-                    className="cursor-pointer transition-colors duration-150"
+                    className="cursor-pointer"
                   />
                 );
               })}
 
-              {/* Render division borders */}
               {divisionBorders && (
                 <Geography
                   geography={divisionBorders as any}
                   fill="none"
-                  stroke="#d1d5db"
-                  strokeWidth={1.5}
+                  stroke="#9ca3af"
+                  strokeWidth={1}
                   strokeLinejoin="round"
                   strokeLinecap="round"
                   style={{
@@ -224,7 +218,7 @@ export function USCensusMap({
                 />
               )}
 
-              {/* Render percentage labels on highlighted divisions */}
+              {/* Percentage labels on highlighted divisions */}
               {highlightedRegions.map((divisionId) => {
                 const pos = divisionLabelPositions[divisionId];
                 if (!pos) return null;
@@ -238,22 +232,22 @@ export function USCensusMap({
                     dy={0}
                   >
                     <rect
-                      x={-24}
-                      y={-12}
-                      width={48}
-                      height={20}
-                      rx={4}
-                      fill="rgba(255,255,255,0.9)"
-                      stroke="#3b82f6"
+                      x={-22}
+                      y={-11}
+                      width={44}
+                      height={18}
+                      rx={3}
+                      fill="rgba(255,255,255,0.92)"
+                      stroke="#0d9488"
                       strokeWidth={1}
                     />
                     <text
                       textAnchor="middle"
-                      y={4}
+                      y={3}
                       style={{
-                        fontSize: 12,
+                        fontSize: 11,
                         fontWeight: 700,
-                        fill: "#1e40af",
+                        fill: "#0f766e",
                         fontFamily: "system-ui, sans-serif",
                       }}
                     >
@@ -270,7 +264,7 @@ export function USCensusMap({
       {/* Tooltip */}
       {hoveredDivision && tooltipPos && (
         <div
-          className="absolute bg-white border border-gray-200 rounded-lg shadow-lg p-3 pointer-events-none z-10"
+          className="absolute bg-white border border-gray-200 rounded-lg shadow-lg px-3 py-2 pointer-events-none z-10"
           style={{
             left: `${tooltipPos.x + 15}px`,
             top: `${tooltipPos.y + 15}px`,
@@ -280,13 +274,9 @@ export function USCensusMap({
             <div className="font-semibold text-gray-900">
               {divisionNames[hoveredDivision]}
             </div>
-            {regionPercentMap[hoveredDivision] !== undefined ? (
-              <div className="text-xs text-blue-600 font-medium mt-1">
-                {regionPercentMap[hoveredDivision]}% overindex
-              </div>
-            ) : (
-              <div className="text-xs text-gray-500 mt-1">
-                Census Division
+            {regionPercentMap[hoveredDivision] !== undefined && (
+              <div className="text-xs text-teal-600 font-medium mt-0.5">
+                {regionPercentMap[hoveredDivision]}%
               </div>
             )}
           </div>

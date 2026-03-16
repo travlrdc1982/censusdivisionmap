@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { USCensusMap } from './components/USCensusMap';
-import { SegmentCard } from './components/SegmentCard';
 
 interface DominantRegion {
   id: string;
@@ -10,6 +9,7 @@ interface DominantRegion {
 
 interface Segment {
   id: string;
+  abbr: string;
   name: string;
   dominantRegions: DominantRegion[];
 }
@@ -17,6 +17,7 @@ interface Segment {
 const segments: Segment[] = [
   {
     id: 'trust-science',
+    abbr: 'TSP',
     name: 'Trust the Science Pragmatists',
     dominantRegions: [
       { id: 'pacific', name: 'Pacific', percent: 17.3 },
@@ -24,6 +25,7 @@ const segments: Segment[] = [
   },
   {
     id: 'consumer-empowerment',
+    abbr: 'CEC',
     name: 'Consumer Empowerment Champions',
     dominantRegions: [
       { id: 'east-north-central', name: 'E. North Central', percent: 19.7 },
@@ -31,6 +33,7 @@ const segments: Segment[] = [
   },
   {
     id: 'traditional-conservatives',
+    abbr: 'TC',
     name: 'Traditional Conservatives',
     dominantRegions: [
       { id: 'east-south-central', name: 'E. South Central', percent: 12.1 },
@@ -38,23 +41,8 @@ const segments: Segment[] = [
     ],
   },
   {
-    id: 'wellness-evangelists',
-    name: 'Wellness Evangelists',
-    dominantRegions: [
-      { id: 'east-south-central', name: 'E. South Central', percent: 8.3 },
-      { id: 'west-south-central', name: 'W. South Central', percent: 16.7 },
-    ],
-  },
-  {
-    id: 'price-populists',
-    name: 'Price Populists',
-    dominantRegions: [
-      { id: 'middle-atlantic', name: 'Middle Atlantic', percent: 15.1 },
-      { id: 'mountain', name: 'Mountain', percent: 12.6 },
-    ],
-  },
-  {
     id: 'health-futurists',
+    abbr: 'HF',
     name: 'Health Futurists',
     dominantRegions: [
       { id: 'east-north-central', name: 'E. North Central', percent: 17.0 },
@@ -62,7 +50,26 @@ const segments: Segment[] = [
     ],
   },
   {
+    id: 'price-populists',
+    abbr: 'PP',
+    name: 'Price Populists',
+    dominantRegions: [
+      { id: 'middle-atlantic', name: 'Middle Atlantic', percent: 15.1 },
+      { id: 'mountain', name: 'Mountain', percent: 12.6 },
+    ],
+  },
+  {
+    id: 'wellness-evangelists',
+    abbr: 'WE',
+    name: 'Wellness Evangelists',
+    dominantRegions: [
+      { id: 'east-south-central', name: 'E. South Central', percent: 8.3 },
+      { id: 'west-south-central', name: 'W. South Central', percent: 16.7 },
+    ],
+  },
+  {
     id: 'paleo-freedom',
+    abbr: 'PFF',
     name: 'Paleo Freedom Fighters',
     dominantRegions: [
       { id: 'east-north-central', name: 'E. North Central', percent: 17.6 },
@@ -72,15 +79,17 @@ const segments: Segment[] = [
   },
   {
     id: 'holistic-naturalists',
-    name: 'Holistic Natural Naturalists',
+    abbr: 'HHN',
+    name: 'Holistic Health Naturalists',
     dominantRegions: [
       { id: 'south-atlantic', name: 'South Atlantic', percent: 28.8 },
       { id: 'east-south-central', name: 'E. South Central', percent: 8.4 },
     ],
   },
   {
-    id: 'libertarians',
-    name: 'Libertarians',
+    id: 'medical-freedom-libertarians',
+    abbr: 'MFL',
+    name: 'Medical Freedom Libertarians',
     dominantRegions: [
       { id: 'new-england', name: 'New England', percent: 5.4 },
       { id: 'south-atlantic', name: 'South Atlantic', percent: 27.1 },
@@ -89,14 +98,16 @@ const segments: Segment[] = [
     ],
   },
   {
-    id: 'anti-vax',
-    name: 'Anti-Vax',
+    id: 'vaccine-skeptics',
+    abbr: 'VS',
+    name: 'Vaccine Skeptics',
     dominantRegions: [
       { id: 'pacific', name: 'Pacific', percent: 15.4 },
     ],
   },
   {
     id: 'universal-care',
+    abbr: 'UCP',
     name: 'Universal Care Progressives',
     dominantRegions: [
       { id: 'south-atlantic', name: 'South Atlantic', percent: 31.2 },
@@ -105,6 +116,7 @@ const segments: Segment[] = [
   },
   {
     id: 'faith-justice',
+    abbr: 'FJP',
     name: 'Faith & Justice Progressives',
     dominantRegions: [
       { id: 'pacific', name: 'Pacific', percent: 24.3 },
@@ -112,6 +124,7 @@ const segments: Segment[] = [
   },
   {
     id: 'health-care-protectionists',
+    abbr: 'HCP',
     name: 'Health Care Protectionists',
     dominantRegions: [
       { id: 'new-england', name: 'New England', percent: 5.8 },
@@ -120,21 +133,24 @@ const segments: Segment[] = [
   },
   {
     id: 'health-abundance',
-    name: 'Health Abundance Dems',
+    abbr: 'HAD',
+    name: 'Health Abundance Democrats',
     dominantRegions: [
       { id: 'east-north-central', name: 'E. North Central', percent: 15.7 },
     ],
   },
   {
-    id: 'incrementalists',
-    name: 'Incrementalists',
+    id: 'health-care-incrementalists',
+    abbr: 'HCI',
+    name: 'Health Care Incrementalists',
     dominantRegions: [
       { id: 'pacific', name: 'Pacific', percent: 32.8 },
     ],
   },
   {
-    id: 'gh-institutionalists',
-    name: 'GH Institutionalists',
+    id: 'global-health-institutionalists',
+    abbr: 'GHI',
+    name: 'Global Health Institutionalists',
     dominantRegions: [
       { id: 'middle-atlantic', name: 'Middle Atlantic', percent: 15.7 },
     ],
@@ -142,118 +158,84 @@ const segments: Segment[] = [
 ];
 
 export default function App() {
-  const [selectedSegment, setSelectedSegment] = useState<string | null>('trust-science');
+  const [selectedSegment, setSelectedSegment] = useState<string>('trust-science');
 
-  const selectedSegmentData = segments.find((s) => s.id === selectedSegment);
+  const selectedSegmentData = segments.find((s) => s.id === selectedSegment)!;
   const regionPercentMap: Record<string, number> = {};
-  if (selectedSegmentData) {
-    for (const r of selectedSegmentData.dominantRegions) {
-      regionPercentMap[r.id] = r.percent;
-    }
+  for (const r of selectedSegmentData.dominantRegions) {
+    regionPercentMap[r.id] = r.percent;
   }
 
   return (
-    <div className="size-full bg-gray-50">
+    <div className="size-full bg-white">
       <div className="h-full flex flex-col">
         {/* Header */}
-        <div className="bg-white border-b border-gray-200 px-6 py-4">
-          <h1 className="text-2xl font-semibold text-gray-900">
-            Division Demographics
-          </h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Overindexed Census Divisions by Consumer Segment
-          </p>
+        <div className="border-b border-gray-200 px-6 py-4">
+          <div className="text-xs text-gray-400 uppercase tracking-wider">Reservoir Health PRISM</div>
+          <h1 className="text-2xl font-bold text-gray-900">Persona Profile</h1>
+          <div className="text-sm text-red-500 font-medium">PRISM Audience Intelligence</div>
         </div>
 
-        {/* Main Content */}
-        <div className="flex-1 flex gap-6 p-6 overflow-hidden">
-          {/* Left Sidebar - Segments */}
-          <div className="w-72 flex flex-col">
-            <div className="mb-4">
-              <h2 className="font-semibold text-gray-900 mb-1">Segments</h2>
-              <p className="text-xs text-gray-500">
-                Click a segment to view overindexed divisions
-              </p>
-            </div>
-            <div className="flex-1 overflow-y-auto space-y-2 pr-2">
-              {segments.map((segment) => (
-                <SegmentCard
+        {/* Segment Selector */}
+        <div className="px-6 pt-5 pb-4">
+          <div className="text-xs text-gray-500 uppercase tracking-wider mb-3">Segment:</div>
+          <div className="flex gap-4 flex-wrap">
+            {segments.map((segment) => {
+              const isSelected = selectedSegment === segment.id;
+              return (
+                <button
                   key={segment.id}
-                  name={segment.name}
-                  dominantRegions={segment.dominantRegions}
-                  isSelected={selectedSegment === segment.id}
                   onClick={() => setSelectedSegment(segment.id)}
-                />
-              ))}
-            </div>
+                  className="flex flex-col items-center gap-1.5 group"
+                >
+                  <div
+                    className={`w-10 h-10 rounded-full flex items-center justify-center text-white text-xs font-bold transition-all ${
+                      isSelected
+                        ? 'bg-red-600 ring-2 ring-red-600 ring-offset-2'
+                        : 'bg-red-500 hover:bg-red-600'
+                    }`}
+                  >
+                    {segment.abbr}
+                  </div>
+                  <span className={`text-[10px] text-center leading-tight max-w-[60px] ${
+                    isSelected ? 'text-gray-900 font-medium' : 'text-gray-500'
+                  }`}>
+                    {segment.name}
+                  </span>
+                </button>
+              );
+            })}
           </div>
+        </div>
 
-          {/* Center - Map */}
-          <div className="flex-1 bg-white rounded-lg border border-gray-200 shadow-sm p-6 flex flex-col">
-            <div className="mb-4">
-              <h2 className="font-semibold text-gray-900">
-                {selectedSegmentData ? selectedSegmentData.name : 'US Census Divisions'}
-              </h2>
-              <p className="text-sm text-gray-500 mt-1">
-                {selectedSegmentData
-                  ? `${selectedSegmentData.dominantRegions.length} overindexed division${
-                      selectedSegmentData.dominantRegions.length > 1 ? 's' : ''
-                    }`
-                  : 'Select a segment to view overindexed divisions'}
-              </p>
-            </div>
+        {/* Selected Segment Header */}
+        <div className="mx-6 bg-gray-100 rounded-lg px-5 py-3 flex items-center gap-3">
+          <div className="w-9 h-9 rounded-full bg-red-500 flex items-center justify-center text-white text-xs font-bold">
+            {selectedSegmentData.abbr}
+          </div>
+          <h2 className="text-lg font-bold text-gray-900 uppercase tracking-wide">
+            {selectedSegmentData.name}
+          </h2>
+        </div>
+
+        {/* Geography Section */}
+        <div className="flex-1 px-6 py-5 flex flex-col min-h-0">
+          <div className="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-3">Geography</div>
+          <div className="flex-1 bg-white rounded-lg border border-gray-200 p-4 flex flex-col min-h-0">
             <div className="flex-1 min-h-0">
               <USCensusMap regionPercentMap={regionPercentMap} />
             </div>
-          </div>
-
-          {/* Right Sidebar - Details */}
-          <div className="w-64 space-y-4">
-            {selectedSegmentData && (
-              <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4">
-                <h3 className="text-sm font-semibold text-gray-700 mb-3">
-                  Overindexed Divisions
-                </h3>
-                <div className="space-y-3">
-                  {selectedSegmentData.dominantRegions.map((region) => (
-                    <div
-                      key={region.id}
-                      className="flex items-center justify-between"
-                    >
-                      <div className="flex items-center gap-2 text-sm">
-                        <div className="w-3 h-3 bg-blue-500 rounded-sm" />
-                        <span className="text-gray-700">{region.name}</span>
-                      </div>
-                      <span className="text-sm font-semibold text-gray-900">
-                        {region.percent}%
-                      </span>
-                    </div>
-                  ))}
+            {/* Division legend below map */}
+            <div className="flex flex-wrap gap-x-5 gap-y-2 mt-4 pt-3 border-t border-gray-100">
+              {selectedSegmentData.dominantRegions.map((region) => (
+                <div key={region.id} className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-teal-500" />
+                  <span className="text-sm text-gray-700">{region.name}</span>
+                  <span className="text-xs bg-teal-100 text-teal-700 px-1.5 py-0.5 rounded font-medium">
+                    Dominant
+                  </span>
                 </div>
-              </div>
-            )}
-
-            <div className="bg-blue-50 rounded-lg border border-blue-200 p-4">
-              <div className="flex items-start gap-2">
-                <svg
-                  className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <div className="text-xs text-blue-800">
-                  <div className="font-medium mb-1">About This View</div>
-                  <div className="text-blue-700">
-                    Highlighted divisions show where each consumer segment
-                    overindexes relative to the national average.
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
